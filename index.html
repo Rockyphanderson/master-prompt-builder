@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Master Prompt Builder</title>
+<style>
+:root{color-scheme:dark;--bg:#101114;--panel:#191a20;--line:#30313a;--text:#f1f1f4;--muted:#a0a1ad;--accent:#b5a1ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Inter,system-ui,-apple-system,sans-serif}
+.wrap{max-width:1000px;margin:auto;padding:28px 18px 60px}.hero{width:100%;max-width:760px;margin:0 auto 18px;padding:22px;border:1px solid #393044;border-radius:16px;background:radial-gradient(ellipse at top right,#38294b,#19171f 48%,#141418)}
+.brand{font-size:12px;letter-spacing:1.4px;color:#c8bbff;font-weight:800}.hero h1{font-size:clamp(32px,6vw,52px);line-height:1.08;letter-spacing:-1.8px;margin:16px 0 12px}.hero p{max-width:650px;color:#b6b5c1;margin:0}
+.layout{display:grid;grid-template-columns:minmax(0,760px);justify-content:center;gap:18px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0}.panel h2{font-size:17px;margin:0 0 4px}.sub{color:var(--muted);font-size:12px;margin:0 0 20px}
+label{display:block;font-size:12px;font-weight:700;color:#c6c5d0;margin:0 0 7px}input,textarea,select{width:100%;border:1px solid #3b3c47;background:#111217;color:var(--text);padding:11px 12px;border-radius:9px;font:inherit;font-size:13px;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--accent)}textarea{min-height:100px;resize:vertical;line-height:1.6}.field{margin-bottom:15px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{border:1px solid #41414d;background:#25252d;color:#f4f2fa;border-radius:9px;padding:11px 14px;font:inherit;font-size:12px;font-weight:750;cursor:pointer}button:hover{filter:brightness(1.12)}.primary{background:var(--accent);color:#191322;border-color:var(--accent)}.wide{width:100%;padding:14px;margin-top:6px}.muted{color:var(--muted);font-size:11px}.hide{display:none!important}
+.framework{display:grid;gap:10px}.item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.n{height:29px;min-width:29px;border-radius:8px;display:grid;place-items:center;background:#2b2735;color:#cbbcff;font-size:11px;font-weight:800}.item strong{font-size:13px}.item p{margin:3px 0 0;color:var(--muted);font-size:11px}
+.result{grid-column:1/-1}.result textarea{min-height:470px;font:12px/1.8 ui-monospace,SFMono-Regular,Menlo,monospace}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1}.qa{display:grid;gap:11px;margin-top:14px}.qa label{display:flex;gap:9px;align-items:flex-start;font-weight:500;color:#e1dfeb;cursor:pointer;line-height:1.5}.qa input{width:15px;height:15px;margin:2px 0 0;accent-color:var(--accent);flex-shrink:0}.status{font-size:12px;font-weight:750;border-top:1px solid var(--line);padding-top:12px;margin-top:15px}.error{color:#ff9b9b;font-size:12px;margin:10px 0 0}
+footer{text-align:center;color:#777987;font-size:10px;margin-top:22px}
+@media(max-width:700px){.layout{grid-template-columns:1fr}.result{grid-column:auto}.hero{padding:17px;border-radius:14px}.panel{padding:17px}}@media(max-width:420px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="hero"><div class="brand">MASTER PROMPT · BUILDER STUDIO</div><h1>Better prompts.<br><span style="color:var(--accent)">Better outcomes.</span></h1><p>Describe what you need. Get an editable, structured prompt you can copy, export, and quality-check before using it with your AI assistant.</p></header>
+<div class="layout">
+<section class="panel input-panel">
+<div class="field"><label for="idea">What do you want AI to help you do? *</label><textarea id="idea" placeholder="Example: Help me launch a new SaaS product in 90 days with a limited budget and a small team."></textarea><div class="muted" style="text-align:right"><span id="count">0</span> characters</div></div>
+<div class="field"><label for="role">AI role / expertise</label><input id="role" placeholder="e.g. Senior growth strategist"></div>
+<div class="field"><label for="goal">Primary objective</label><input id="goal" placeholder="e.g. Validate product-market fit"></div>
+<div class="two"><div class="field"><label for="audience">Target audience</label><input id="audience" placeholder="e.g. Early-stage founders"></div><div class="field"><label for="resources">Resources / constraints</label><input id="resources" placeholder="e.g. 2 people, limited budget"></div></div>
+<div class="two"><div class="field"><label for="horizon">Timeline / scope</label><input id="horizon" placeholder="e.g. 90 days"></div><div class="field"><label for="risks">Key risks</label><input id="risks" placeholder="e.g. Adoption, retention"></div></div>
+<div class="field"><label for="output">Preferred output format</label><select id="output"><option>Structured action plan with clear steps and deliverables</option><option>Weekly sprint plan with action, owner, rationale, risk, and deliverable</option><option>Executive strategy brief with recommendations and evidence</option><option>Step-by-step SOP with checklist and quality controls</option><option>Research report with sources, analysis, and recommendations</option><option>Creative brief with concept, audience, messaging, and execution</option></select></div>
+<div class="field"><label for="extra">Additional instructions (optional)</label><textarea id="extra" placeholder="Tone, tools, known data, requirements, or things AI must avoid." style="min-height:75px"></textarea></div>
+<button class="primary wide" id="build">✦ Build my master prompt →</button><p id="error" class="error hide">Please describe your idea first.</p>
+</section>
+<section id="results" class="panel result hide"><h2>03 / Your master prompt</h2><p class="sub">Editable draft · Ready to copy or export</p><textarea id="final" aria-label="Editable master prompt"></textarea><div class="actions"><button class="primary" id="copy">Copy prompt</button><button id="download">Export .txt</button><button id="rebuild">Rebuild from inputs</button></div><p id="copy-note" class="muted"></p>
+<hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+<h2>04 / Quality assurance</h2><p class="sub">Review structural completeness before using the prompt. Checklist items can be manually confirmed.</p><div id="checks" class="qa"></div><div id="score" class="status">QA readiness</div><p class="muted">QA checks structure, not factual truth or execution success. Independently validate figures, assumptions, and source claims.</p></section>
+</div><footer>MASTER PROMPT BUILDER · THINK CLEARLY. EXECUTE BETTER.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id),v=id=>$(id).value.trim();
+$('idea').addEventListener('input',()=>$('count').textContent=$('idea').value.length);
+function build(){
+ const idea=v('idea');if(!idea){$('error').classList.remove('hide');$('idea').focus();return}$('error').classList.add('hide');
+ const role=v('role')||'a senior subject-matter expert relevant to the task',goal=v('goal')||'Produce a useful, actionable solution to the stated task',audience=v('audience')||'Identify the intended audience from the request; label assumptions',resources=v('resources')||'Not specified; identify material constraints and do not invent resources',horizon=v('horizon')||'Propose a realistic scope and timeline based on complexity',risks=v('risks')||'Identify the most material risks based on the task; do not assume they are known',extra=v('extra')||'No additional requirements supplied',output=v('output');
+ const s=[
+ ['ROLE',`Act as ${role}. Apply relevant professional standards and practical expertise. Tailor recommendations to the task, audience, and constraints. Do not claim expertise, access, or experience you do not have.`],
+ ['TASK',`Original request:\n${idea}\n\nPrimary objective: ${goal}\n\nTurn the request into a clear deliverable. Define success, prioritize high-impact actions, and make recommendations specific enough to execute.`],
+ ['CONTEXT',`Target audience: ${audience}\nResources and constraints: ${resources}\nTimeline or scope: ${horizon}\nKnown or potential risks: ${risks}\nAdditional instructions: ${extra}\n\nDistinguish user-provided facts from assumptions. Ask concise clarifying questions only when missing information materially changes the answer; otherwise proceed with clearly labeled assumptions.`],
+ ['REASONING',`Use a structured, evidence-based decision process. Break the task into manageable steps. Explain key decisions, assumptions, trade-offs, and evidence in a concise user-facing rationale; do not provide private hidden chain-of-thought. Prefer measurable outcomes over unsupported claims. Verify current or external facts with credible sources where tools are available. Never invent data, benchmarks, results, or citations. Connect recommendations to the objective, constraints, or risks.`],
+ ['STOP CONDITIONS',`Complete the task only when:\n- The deliverable directly addresses the original request.\n- Recommendations are feasible within constraints or limitations are flagged.\n- Material assumptions, uncertainties, dependencies, and risks are documented.\n- Success criteria and next steps are defined where relevant.\n- A final decision gate defines proceed, revise, or stop where applicable.\n- Missing information is flagged instead of guessed.`],
+ ['OUTPUT',`Format: ${output}.\n\nStructure the response for easy scanning. For each relevant action, include the specific task, responsible owner, rationale, risk addressed, and tangible deliverable. Include timing, dependencies, and success metrics where appropriate. Adapt these fields to the task instead of forcing irrelevant sections.\n\nFINAL QA BEFORE DELIVERY:\n1. Check every requirement against the original request.\n2. Verify arithmetic, dates, names, claims, and citations wherever applicable.\n3. Confirm recommendations are logically consistent, evidence-supported, and feasible.\n4. Identify gaps, contradictions, and unverified assumptions.\n5. Remove fabricated metrics, redundant content, and vague instructions.\n6. Return the polished deliverable and flag unresolved limitations.`]
+ ];
+ $('final').value=s.map(x=>x[0]+'\n'+'='.repeat(x[0].length)+'\n'+x[1]).join('\n\n');
+ $('results').classList.remove('hide');
+ const tests=[['Role is specific',v('role')!==''],['Task and objective are defined',!!idea&&!!v('goal')],['Audience and constraints are captured',!!v('audience')&&!!v('resources')],['Timeline and risks are captured',!!v('horizon')&&!!v('risks')],['Evidence and assumption rules are included',true],['Completion gate and final QA are included',true],['Output format is specified',!!output]];
+ $('checks').replaceChildren();
+ tests.forEach(([name,ok])=>{const label=document.createElement('label'),cb=document.createElement('input'),span=document.createElement('span');cb.type='checkbox';cb.checked=ok;span.textContent=name;label.append(cb,span);$('checks').append(label);cb.addEventListener('change',score)});
+ score();$('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function score(){const a=[...$('checks').querySelectorAll('input')],n=a.filter(x=>x.checked).length;$('score').textContent=`QA readiness: ${n}/${a.length} checks confirmed${n===a.length?' · Ready for final review':' · Review unchecked items'}`}
+$('build').addEventListener('click',build);$('rebuild').addEventListener('click',build);
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('final').value);$('copy-note').textContent='Copied. Paste your prompt into your AI assistant.'}catch(e){$('final').select();$('copy-note').textContent='Prompt selected. Copy it manually using Ctrl/Cmd+C.'}});
+$('download').addEventListener('click',()=>{const a=document.createElement('a'),u=URL.createObjectURL(new Blob([$('final').value],{type:'text/plain;charset=utf-8'}));a.href=u;a.download='master-prompt.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)});
+</script></body></html>
